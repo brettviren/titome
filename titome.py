@@ -45,7 +45,7 @@ def get_config(filename):
     if filename is None:
         ch = os.environ.get('XDG_CONFIG_HOME')
         if ch:
-            filename = os.path.join(cg, "titome", "titome.cfg")
+            filename = os.path.join(ch, "titome", "titome.cfg")
         else:
             filename = os.path.join(os.environ['HOME'], ".titome.cfg")
     cfg = ConfigParser()
@@ -64,6 +64,9 @@ def get_config(filename):
     cfg["zones"]["CERN"] = "Europe/Zurich"
     cfg["zones"]["KEK"] = "Japan"
     
+    pdir = os.path.dirname(filename)
+    if not os.path.exists(pdir):
+        os.makedirs(pdir)
     with open(filename, 'w') as fp:
         cfg.write(fp)
 

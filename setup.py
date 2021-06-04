@@ -13,11 +13,12 @@ setuptools.setup(
     author_email="brett.viren@gmail.com",
     description="Time To Meet",
     url="https://brettviren.github.io/titome",
-    packages=setuptools.find_packages(),
+    py_modules=['titome'],
     python_requires='>=3.5',    # use of typing probably drive this
     install_requires=[
         "click",
         "rich",
+        "arrow",
     ],
     entry_points = dict(
         console_scripts = [
