@@ -1,0 +1,82 @@
+#+title: titome ⏰ time-to-meet
+#+EXPORT_FILE_NAME: index.html
+#+HTML_HEAD: <link rel="stylesheet" href="org.css" type="text/css" />
+* Overview
+:PROPERTIES:
+:CUSTOM_ID: overview
+:END:
+
+
+Often I want a fast way to see and communicate available times in the
+time zones of various colleagues.  With major inspiration from
+https://superuser.com/a/1397116 this package provides such a display.
+
+* Install
+:PROPERTIES:
+:CUSTOM_ID: install
+:END:
+
+
+Package installs in the usual Python way or place the [[file:titome.py][titome]] script in
+your ~PATH~.
+
+* Usage
+:PROPERTIES:
+:CUSTOM_ID: usage
+:END:
+
+
+By default it will tell you times for today.
+
+#+begin_src shell :exports both :results output code :wrap "example"
+ titome
+#+end_src
+
+#+RESULTS:
+#+begin_example
+        today: Thursday 06/03 09:00 (10 hours ago)        
+┏━━━━━━┳━━━━┳━━━━┳━━━━┳━━━━┳━━━━┳━━━━┳━━━━┳━━━━┳━━━━┳━━━━┓
+┃ zone ┃  9 ┃ 10 ┃ 11 ┃ 12 ┃ 13 ┃ 14 ┃ 15 ┃ 16 ┃ 17 ┃ 18 ┃
+┡━━━━━━╇━━━━╇━━━━╇━━━━╇━━━━╇━━━━╇━━━━╇━━━━╇━━━━╇━━━━╇━━━━┩
+│ BNL  │  9 │ 10 │ 11 │ 12 │ 13 │ 14 │ 15 │ 16 │ 17 │ 18 │
+│ FNAL │  8 │  9 │ 10 │ 11 │ 12 │ 13 │ 14 │ 15 │ 16 │ 17 │
+│ LBNL │  6 │  7 │  8 │  9 │ 10 │ 11 │ 12 │ 13 │ 14 │ 15 │
+│ RAL  │ 14 │ 15 │ 16 │ 17 │ 18 │ 19 │ 20 │ 21 │ 22 │ 23 │
+│ CERN │ 15 │ 16 │ 17 │ 18 │ 19 │ 20 │ 21 │ 22 │ 23 │  0 │
+│ KEK  │ 22 │ 23 │  0 │  1 │  2 │  3 │  4 │  5 │  6 │  7 │
+└──────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┘
+#+end_example
+
+You can check times for other days an limit the hours
+
+#+begin_src shell :exports both :results output code :wrap "example"
+ titome tomorrow -t 10,12,15
+#+end_src
+
+#+RESULTS:
+#+begin_example
+tomorrow: Friday 06/04 
+  10:00 (in 14 hours)  
+┏━━━━━━┳━━━━┳━━━━┳━━━━┓
+┃ zone ┃ 10 ┃ 12 ┃ 15 ┃
+┡━━━━━━╇━━━━╇━━━━╇━━━━┩
+│ BNL  │ 10 │ 12 │ 15 │
+│ FNAL │  9 │ 11 │ 14 │
+│ LBNL │  7 │  9 │ 12 │
+│ RAL  │ 15 │ 17 │ 20 │
+│ CERN │ 16 │ 18 │ 21 │
+│ KEK  │ 23 │  1 │  4 │
+└──────┴────┴────┴────┘
+#+end_example
+
+* Configuration
+:PROPERTIES:
+:CUSTOM_ID: config
+:END:
+
+
+On first run, a configuration file will be generated.  It may be
+edited to change zones and their displayed labels.  Here is an example.
+
+#+include: dot.titome.cfg example
+
