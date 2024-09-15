@@ -55,7 +55,9 @@ def get_config(filename):
 
     # make default, save and return
 
-    # The time zones to care about.  'local' is implied
+    # The time zones to care about.  'local' is implied.
+    # Here we just set defaults if config file is not found.
+    # Edit existing config file to add new ones.
     cfg["zones"] = {}
     cfg["zones"]["BNL"] = "US/Eastern"
     cfg["zones"]["FNAL"] = "US/Central"
@@ -103,7 +105,7 @@ def main(config, times, when):
     arw = parse_date(when)
     #print(arw)
     hours = [int(h) for h in times.split(",")]
-    zones = [z.split(":",1) for z in cfg["zones"].values()]
+    zones = [z.split(":", 1) for z in cfg["zones"].values()]
 
 
     first = arw.replace(hour=hours[0])
