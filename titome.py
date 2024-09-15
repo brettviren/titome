@@ -59,6 +59,7 @@ def get_config(filename):
     cfg["zones"] = {}
     cfg["zones"]["BNL"] = "US/Eastern"
     cfg["zones"]["FNAL"] = "US/Central"
+    cfg["zones"]["LANL"] = "US/Mountain"
     cfg["zones"]["LBNL"] = "US/Pacific"
     cfg["zones"]["RAL"] = "Europe/London"
     cfg["zones"]["CERN"] = "Europe/Zurich"
