@@ -102,11 +102,13 @@ def parse_date(text):
 @click.option("-c", "--config", default=None,
               type=click.Path(dir_okay=False, file_okay=True),
               help="Configuration file")
+@click.option("-z", "--zones", default="zones",
+              help="The config section to read")
 @click.option("-t", "--times",
               default="9,10,11,12,13,14,15,16,17,18",
               help="Specific times to display")
 @click.argument("when", nargs=-1)
-def main(config, times, when):
+def main(config, zones, times, when):
     cfg = get_config(config)
 
     if when:
@@ -116,7 +118,6 @@ def main(config, times, when):
 
     arw = parse_date(when)
     hours = [int(h) for h in times.split(",")]
-    # zones = [z.split(":", 1) for z in cfg["zones"].values()]
 
     first = arw.replace(hour=hours[0])
     fmtstr = first.strftime('%A %m/%d %H:%M')
@@ -126,7 +127,7 @@ def main(config, times, when):
     for h in hours:
         table.add_column(str(h), justify="right")
 
-    for label, zone in cfg["zones"].items():
+    for label, zone in cfg[zones].items():
         hh = [str(arw.replace(hour=h).to(zone).hour) for h in hours]
         table.add_row(label, *hh)
 
