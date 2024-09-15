@@ -2,19 +2,18 @@
 '''
 '''
 import os
-import pytz
+# import pytz
 import arrow
 import click
-
+from pathlib import Path
 from datetime import datetime
 import parsedatetime as pdt
-from itertools import product as outer
-
-from configparser import ConfigParser
+from configparser import RawConfigParser
 
 from rich.table import Table
 from rich.console import Console
 console = Console()
+
 
 def date_test():
     cal = pdt.Calendar()
@@ -23,9 +22,9 @@ def date_test():
     arw = arrow.get(cal.parseDT("today 10 pm", now)[0])
     console.print(arw.humanize())
 
+
 def table_test():
 
-    from rich.console import Console
     from rich.table import Table
 
     table = Table(title="Star Wars Movies")
@@ -34,25 +33,38 @@ def table_test():
     table.add_column("Title", style="magenta")
     table.add_column("Box Office", justify="right", style="green")
 
-    table.add_row("Dec 20, 2019", "Star Wars: The Rise of Skywalker", "$952,110,690")
-    table.add_row("May 25, 2018", "Solo: A Star Wars Story", "$393,151,347")
-    table.add_row("Dec 15, 2017", "Star Wars Ep. V111: The Last Jedi", "$1,332,539,889")
-    table.add_row("Dec 16, 2016", "Rogue One: A Star Wars Story", "$1,332,439,889")
+    table.add_row("Dec 20, 2019", "Star Wars: The Rise of Skywalker",
+                  "$952,110,690")
+    table.add_row("May 25, 2018", "Solo: A Star Wars Story",
+                  "$393,151,347")
+    table.add_row("Dec 15, 2017", "Star Wars Ep. V111: The Last Jedi",
+                  "$1,332,539,889")
+    table.add_row("Dec 16, 2016", "Rogue One: A Star Wars Story",
+                  "$1,332,439,889")
 
     console.print(table)
 
-def get_config(filename):
-    if filename is None:
-        ch = os.environ.get('XDG_CONFIG_HOME')
-        if ch:
-            filename = os.path.join(ch, "titome", "titome.cfg")
-        else:
-            filename = os.path.join(os.environ['HOME'], ".titome.cfg")
-    cfg = ConfigParser()
-    if os.path.exists(filename):
-        cfg.read(filename)
-        return cfg
 
+def get_config(filename):
+    cfg = RawConfigParser()
+    cfg.optionxform = lambda option: option
+
+    try:
+        path = Path(filename)
+        cfg.read(path)
+        return cfg
+    except TypeError:
+        pass
+
+    ch = Path(os.environ.get('XDG_CONFIG_HOME', Path.home() / ".config"))
+    xdg = ch / "titome" / "titome.cfg"
+    if xdg.exists():
+        return get_config(xdg)
+    old = Path.home() / ".titome.cfg"
+    if old.exists():
+        return get_config(old)
+
+    # print(f"no config found at {filename}, generating {xdg}")
     # make default, save and return
 
     # The time zones to care about.  'local' is implied.
@@ -66,19 +78,18 @@ def get_config(filename):
     cfg["zones"]["RAL"] = "Europe/London"
     cfg["zones"]["CERN"] = "Europe/Zurich"
     cfg["zones"]["KEK"] = "Japan"
-    
-    pdir = os.path.dirname(filename)
-    if not os.path.exists(pdir):
-        os.makedirs(pdir)
-    with open(filename, 'w') as fp:
+
+    xdg.parent.mkdir(exist_ok=True, parents=True)
+    with open(xdg, 'w') as fp:
         cfg.write(fp)
 
     return cfg
 
+
 def parse_date(text):
     cal = pdt.Calendar()
     tt, rc = cal.parse(text, arrow.utcnow().timetuple())
-    assert(rc)
+    assert (rc)
     arw = arrow.get(tt)
     return arw.to("local")
 
@@ -86,11 +97,12 @@ def parse_date(text):
     # arw = arrow.get(cal.parseDT("today 10 pm", now)[0])
     # console.print(arw.humanize())
 
+
 @click.command()
 @click.option("-c", "--config", default=None,
               type=click.Path(dir_okay=False, file_okay=True),
               help="Configuration file")
-@click.option("-t", "--times", 
+@click.option("-t", "--times",
               default="9,10,11,12,13,14,15,16,17,18",
               help="Specific times to display")
 @click.argument("when", nargs=-1)
@@ -101,12 +113,10 @@ def main(config, times, when):
         when = ' '.join(when)
     else:
         when = "today"
-    
-    arw = parse_date(when)
-    #print(arw)
-    hours = [int(h) for h in times.split(",")]
-    zones = [z.split(":", 1) for z in cfg["zones"].values()]
 
+    arw = parse_date(when)
+    hours = [int(h) for h in times.split(",")]
+    # zones = [z.split(":", 1) for z in cfg["zones"].values()]
 
     first = arw.replace(hour=hours[0])
     fmtstr = first.strftime('%A %m/%d %H:%M')
@@ -116,11 +126,7 @@ def main(config, times, when):
     for h in hours:
         table.add_column(str(h), justify="right")
 
-    lines = list()
-    for zz in zones:
-        if len(zz) == 1:
-            zz.append(zz[0])
-        zone,label = zz
+    for label, zone in cfg["zones"].items():
         hh = [str(arw.replace(hour=h).to(zone).hour) for h in hours]
         table.add_row(label, *hh)
 

@@ -1,6 +1,7 @@
 #+title: titome ⏰ time-to-meet
 #+EXPORT_FILE_NAME: index.html
 #+HTML_HEAD: <link rel="stylesheet" href="org.css" type="text/css" />
+
 * Overview
 :PROPERTIES:
 :CUSTOM_ID: overview
@@ -34,12 +35,13 @@ By default it will tell you times for today.
 
 #+RESULTS:
 #+begin_example
-        today: Thursday 06/03 09:00 (10 hours ago)        
+         today: Sunday 09/15 09:00 (3 hours ago)          
 ┏━━━━━━┳━━━━┳━━━━┳━━━━┳━━━━┳━━━━┳━━━━┳━━━━┳━━━━┳━━━━┳━━━━┓
 ┃ zone ┃  9 ┃ 10 ┃ 11 ┃ 12 ┃ 13 ┃ 14 ┃ 15 ┃ 16 ┃ 17 ┃ 18 ┃
 ┡━━━━━━╇━━━━╇━━━━╇━━━━╇━━━━╇━━━━╇━━━━╇━━━━╇━━━━╇━━━━╇━━━━┩
 │ BNL  │  9 │ 10 │ 11 │ 12 │ 13 │ 14 │ 15 │ 16 │ 17 │ 18 │
 │ FNAL │  8 │  9 │ 10 │ 11 │ 12 │ 13 │ 14 │ 15 │ 16 │ 17 │
+│ LANL │  7 │  8 │  9 │ 10 │ 11 │ 12 │ 13 │ 14 │ 15 │ 16 │
 │ LBNL │  6 │  7 │  8 │  9 │ 10 │ 11 │ 12 │ 13 │ 14 │ 15 │
 │ RAL  │ 14 │ 15 │ 16 │ 17 │ 18 │ 19 │ 20 │ 21 │ 22 │ 23 │
 │ CERN │ 15 │ 16 │ 17 │ 18 │ 19 │ 20 │ 21 │ 22 │ 23 │  0 │
@@ -55,13 +57,14 @@ You can check times for other days an limit the hours
 
 #+RESULTS:
 #+begin_example
-tomorrow: Friday 06/04 
-  10:00 (in 14 hours)  
+tomorrow: Monday 09/16 
+  10:00 (in 21 hours)  
 ┏━━━━━━┳━━━━┳━━━━┳━━━━┓
 ┃ zone ┃ 10 ┃ 12 ┃ 15 ┃
 ┡━━━━━━╇━━━━╇━━━━╇━━━━┩
 │ BNL  │ 10 │ 12 │ 15 │
 │ FNAL │  9 │ 11 │ 14 │
+│ LANL │  8 │ 10 │ 13 │
 │ LBNL │  7 │  9 │ 12 │
 │ RAL  │ 15 │ 17 │ 20 │
 │ CERN │ 16 │ 18 │ 21 │
@@ -75,8 +78,14 @@ tomorrow: Friday 06/04
 :END:
 
 
-On first run, a configuration file will be generated.  It may be
-edited to change zones and their displayed labels.  Here is an example.
+On first run, a configuration file will be generated into =~/.config/titome/titome.cfg= (or as directed by ~XDG_CONFIG_HOME~).  You may then edit the file for future use.  The format is:
+
+#+begin_example
+[zones]
+Label1 = Zone/Name
+#+end_example
+
+Here is a full example.
 
 #+include: dot.titome.cfg example
 
