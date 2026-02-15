@@ -1,0 +1,25 @@
+[project]
+name = "titome"
+version = "0.2.0"
+description = "Add your description here"
+authors = [
+    { name = "Brett Viren", email = "brett.viren@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "arrow>=1.4.0",
+    "click>=8.3.1",
+    "parsedatetime>=2.6",
+    "rich>=14.3.2",
+]
+
+[project.scripts]
+titome = "titome.main:main"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project.readme]
+file = "README.org"
+content-type = "text/plain"
