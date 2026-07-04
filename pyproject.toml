@@ -1,7 +1,7 @@
 [project]
 name = "titome"
 version = "0.2.0"
-description = "Add your description here"
+description = "Print a nice table of times to meet across your favorite timezones"
 authors = [
     { name = "Brett Viren", email = "brett.viren@gmail.com" }
 ]
